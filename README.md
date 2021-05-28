@@ -26,5 +26,9 @@ Download latest from [releases](https://github.com/oddbear/GoXLR-Force-Defaults/
 > sc delete GoXLR.Force.Defaults
 4. Delete the folder
 
+### Issues ?
+
+If you get any issues, please [create a ticket](https://github.com/oddbear/GoXLR-Force-Defaults/issues).
+
 ### Dependencies
 * [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
