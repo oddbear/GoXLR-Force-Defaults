@@ -1,9 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ServiceProcess;
 
 namespace GoXLR.Force.Defaults
 {
@@ -11,14 +6,10 @@ namespace GoXLR.Force.Defaults
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            ServiceBase.Run(new ServiceBase[]
+            {
+                new WorkerService()
+            });
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddHostedService<Worker>();
-                });
     }
 }
