@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <UserSecretsId>dotnet-GoXLR.Force.Defaults-3BEDCE71-757D-40E0-A0F9-596CB276CC64</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="AudioDeviceCmdlets" Version="3.0.0.2" />
+  </ItemGroup>
+</Project>
