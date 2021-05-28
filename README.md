@@ -25,3 +25,6 @@ Download latest from [releases](https://github.com/oddbear/GoXLR-Force-Defaults/
 3. Run the following command to delete the service:
 > sc delete GoXLR.Force.Defaults
 4. Delete the folder
+
+### Dependencies
+* [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
