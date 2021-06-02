@@ -32,3 +32,10 @@ If you get any issues, please [create a ticket](https://github.com/oddbear/GoXLR
 
 ### Dependencies
 * [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
+
+### Similar projected (changes defaults)
+- [EarTrumpet](https://github.com/File-New-Project/EarTrumpet/)
+- [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
+- [SoundSwitch](https://github.com/Belphemur/SoundSwitch)
+  - [AudioEndPointLibrary](https://github.com/Belphemur/AudioEndPointLibrary)
+Any more?
