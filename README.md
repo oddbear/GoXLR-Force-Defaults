@@ -5,11 +5,11 @@
 
 This service is made because Windows is quite eager to change the default sound devices. <br />
 It will check every 5 seconds if this change has happened, and change this back.<br />
-Additionally it will also set all the GoXLR Channels to 100% Volume, and unmute them if detected.
+Additionally it will also set all the BEACN Devices to 100% Volume, and unmute them if detected.
 
 ### Download
 
-Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defaults/releases/download/v1.0/v1.0.zip)
+Download latest from [releases](https://github.com/GinjahWolf92/BEACN-Mix-Create-Force-Default/releases/download/v1.0/v1.0.zip)
 
 ### Install
 
@@ -31,7 +31,7 @@ Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defa
 
 ### Issues ?
 
-If you get any issues, please [create a ticket](https://github.com/GinjahWolf92/GoXLR-Force-Defaults/issues).
+If you get any issues, please [create a ticket](https://github.com/GinjahWolf92/BEACN-Mix-Create-Force-Default/issues).
 
 ### Dependencies
 * [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
