@@ -1,0 +1,54 @@
+{
+  "runtimeTarget": {
+    "name": ".NETFramework,Version=v4.7.2/win7-x86",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {},
+    ".NETFramework,Version=v4.7.2/win7-x86": {
+      "BEACN Mix Create - Force Default Device/1.0.0": {
+        "dependencies": {
+          "AudioDeviceCmdlets": "3.0.0.2"
+        },
+        "runtime": {
+          "BEACN Mix Create - Force Default Device.exe": {}
+        }
+      },
+      "AudioDeviceCmdlets/3.0.0.2": {
+        "dependencies": {
+          "System.Management.Automation_PowerShell_3.0": "6.3.9600.17400"
+        },
+        "runtime": {
+          "lib/net45/AudioDeviceCmdlets.dll": {}
+        }
+      },
+      "System.Management.Automation_PowerShell_3.0/6.3.9600.17400": {
+        "runtime": {
+          "lib/net40/System.Management.Automation.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BEACN Mix Create - Force Default Device/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AudioDeviceCmdlets/3.0.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GavBpytlAq1ZHy4HJq2Zm5SJzkM75nJQlN3/pm6FCIjSe9T8DZeG9r1toEhdBJtOamjNDa/IfcxXkkANeVnwJA==",
+      "path": "audiodevicecmdlets/3.0.0.2",
+      "hashPath": "audiodevicecmdlets.3.0.0.2.nupkg.sha512"
+    },
+    "System.Management.Automation_PowerShell_3.0/6.3.9600.17400": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-u+lG9fj/fis56ip8wA3fluZ2GYaLr8bttxaS6ffDK5OGbwMzB7WzZr2E6TaRwgei57xxnXmCbvzXYzE3iap5kA==",
+      "path": "system.management.automation_powershell_3.0/6.3.9600.17400",
+      "hashPath": "system.management.automation_powershell_3.0.6.3.9600.17400.nupkg.sha512"
+    }
+  }
+}

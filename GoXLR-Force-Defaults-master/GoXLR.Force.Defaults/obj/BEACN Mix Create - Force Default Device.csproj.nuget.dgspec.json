@@ -1,0 +1,56 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Kieran\\Desktop\\GoXLR-Force-Defaults-master\\GoXLR.Force.Defaults\\BEACN Mix Create - Force Default Device.csproj": {}
+  },
+  "projects": {
+    "D:\\Kieran\\Desktop\\GoXLR-Force-Defaults-master\\GoXLR.Force.Defaults\\BEACN Mix Create - Force Default Device.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Kieran\\Desktop\\GoXLR-Force-Defaults-master\\GoXLR.Force.Defaults\\BEACN Mix Create - Force Default Device.csproj",
+        "projectName": "BEACN Mix Create - Force Default Device",
+        "projectPath": "D:\\Kieran\\Desktop\\GoXLR-Force-Defaults-master\\GoXLR.Force.Defaults\\BEACN Mix Create - Force Default Device.csproj",
+        "packagesPath": "C:\\Users\\Kiera\\.nuget\\packages\\",
+        "outputPath": "D:\\Kieran\\Desktop\\GoXLR-Force-Defaults-master\\GoXLR.Force.Defaults\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Kiera\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "AudioDeviceCmdlets": {
+              "target": "Package",
+              "version": "[3.0.0.2, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win7-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}
