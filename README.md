@@ -15,7 +15,7 @@ Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defa
 
 1. Extract zip file to a install location on the disk.
 2. Open up cmd.exe as Administrator (you will need this access to install a service).
-3. Run the fallowing command to install the application as a windows service (you will need to change the path part):
+3. Run the following command to install the application as a windows service (you will need to change the path part):
 > sc create BEACN.Mix.Create.Force.Default.Device binPath="`<change path here>`\v1.0\BEACN Mix Create - Force Default Device.exe" start=auto
 4. To start the service, run the fallowing command:
 > sc start BEACN.Mix.Create.Force.Default.Device
