@@ -1,4 +1,6 @@
-# This is a fork used to change the Windows defaults for the BEACN Mix Create audio devices rather than GoXLR orignally created by oddbear.
+# This is a fork used to change the Windows defaults for the BEACN Mix Create audio devices rather than GoXLR
+
+### Orignally created by oddbear
 
 
 This service is made because Windows is quite eager to change the default sound devices. <br />
@@ -14,7 +16,7 @@ Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defa
 1. Extract zip file to a install location on the disk.
 2. Open up cmd.exe as Administrator (you will need this access to install a service).
 3. Run the fallowing command to install the application as a windows service (you will need to change the path part):
-> sc create GoXLR.Force.Defaults binPath="`<change path here>`\publish\GoXLR.Force.Defaults.exe" start=auto
+> sc create BEACN.Mix.Create.Force.Default.Device binPath="`<change path here>`\publish\GoXLR.Force.Defaults.exe" start=auto
 4. To start the service, run the fallowing command:
 > sc start GoXLR.Force.Defaults
 
@@ -22,9 +24,9 @@ Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defa
 
 1. Run cmd.exe as administrator
 2. Run the fallowing command to stop the service:
-> sc stop GoXLR.Force.Defaults
+> sc stop BEACN.Mix.Create.Force.Default.Device
 3. Run the following command to delete the service:
-> sc delete GoXLR.Force.Defaults
+> sc delete BEACN.Mix.Create.Force.Default.Device
 4. Delete the folder
 
 ### Issues ?
