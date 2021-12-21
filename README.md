@@ -9,16 +9,16 @@ Additionally it will also set all the GoXLR Channels to 100% Volume, and unmute 
 
 ### Download
 
-Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defaults/releases/download/v1/publish.zip)
+Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defaults/releases/download/v1.0/v1.0.zip)
 
 ### Install
 
 1. Extract zip file to a install location on the disk.
 2. Open up cmd.exe as Administrator (you will need this access to install a service).
 3. Run the fallowing command to install the application as a windows service (you will need to change the path part):
-> sc create BEACN.Mix.Create.Force.Default.Device binPath="`<change path here>`\publish\GoXLR.Force.Defaults.exe" start=auto
+> sc create BEACN.Mix.Create.Force.Default.Device binPath="`<change path here>`\v1.0\BEACN Mix Create - Force Default Device.exe" start=auto
 4. To start the service, run the fallowing command:
-> sc start GoXLR.Force.Defaults
+> sc start BEACN.Mix.Create.Force.Default.Device
 
 ### Uninstall
 
