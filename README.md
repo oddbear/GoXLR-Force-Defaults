@@ -1,4 +1,5 @@
-# GoXLR-Force-Defaults
+# This is a fork used to change the Windows defaults for the BEACN Mix Create audio devices rather than GoXLR orignally created by oddbear.
+
 
 This service is made because Windows is quite eager to change the default sound devices. <br />
 It will check every 5 seconds if this change has happened, and change this back.<br />
@@ -6,7 +7,7 @@ Additionally it will also set all the GoXLR Channels to 100% Volume, and unmute 
 
 ### Download
 
-Download latest from [releases](https://github.com/oddbear/GoXLR-Force-Defaults/releases/download/v1/publish.zip)
+Download latest from [releases](https://github.com/GinjahWolf92/GoXLR-Force-Defaults/releases/download/v1/publish.zip)
 
 ### Install
 
@@ -28,7 +29,7 @@ Download latest from [releases](https://github.com/oddbear/GoXLR-Force-Defaults/
 
 ### Issues ?
 
-If you get any issues, please [create a ticket](https://github.com/oddbear/GoXLR-Force-Defaults/issues).
+If you get any issues, please [create a ticket](https://github.com/GinjahWolf92/GoXLR-Force-Defaults/issues).
 
 ### Dependencies
 * [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
