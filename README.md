@@ -1,6 +1,6 @@
-# This is a fork used to change the Windows defaults for the BEACN Mix Create audio devices
+# Change the Windows defaults for the BEACN Mix Create audio devices
 
-### Orignally created by oddbear
+### Orignally created by oddbear and not so may still be references to GoXLR
 
 
 This service is made because Windows is quite eager to change the default sound devices. <br />
