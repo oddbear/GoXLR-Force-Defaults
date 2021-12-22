@@ -17,13 +17,13 @@ Download latest from [releases](https://github.com/GinjahWolf92/BEACN-Mix-Create
 2. Open up cmd.exe as Administrator (you will need this access to install a service).
 3. Run the following command to install the application as a windows service (you will need to change the path part):
 > sc create BEACN.Mix.Create.Force.Default.Device binPath="`<change path here>`\v1.0\BEACN Mix Create - Force Default Device.exe" start=auto
-4. To start the service, run the fallowing command:
+4. To start the service, run the following command:
 > sc start BEACN.Mix.Create.Force.Default.Device
 
 ### Uninstall
 
 1. Run cmd.exe as administrator
-2. Run the fallowing command to stop the service:
+2. Run the following command to stop the service:
 > sc stop BEACN.Mix.Create.Force.Default.Device
 3. Run the following command to delete the service:
 > sc delete BEACN.Mix.Create.Force.Default.Device
