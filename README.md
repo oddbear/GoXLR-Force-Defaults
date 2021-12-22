@@ -1,6 +1,6 @@
 # Change the Windows defaults for the BEACN Mix Create audio devices
 
-### Orignally created by oddbear and so may still be references to original GoXLR devices
+### NOTE: Orignally created by oddbear for GoXLR and so may still be references to original GoXLR devices in documentation and files names but all functionality has been adapted to suit the BEACN Mix Create by Ginjah
 
 
 This service is made because Windows is quite eager to change the default sound devices. <br />
