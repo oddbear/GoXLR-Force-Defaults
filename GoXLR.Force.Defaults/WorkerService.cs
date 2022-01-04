@@ -12,7 +12,7 @@ using GoXLR.Force.Defaults.Helpers;
 namespace GoXLR.Force.Defaults
 {
     public class WorkerService : ServiceBase
-	{
+    {
         private readonly Thread _workerThread = null;
         private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
 
@@ -42,7 +42,7 @@ namespace GoXLR.Force.Defaults
                     _manualResetEvent.WaitOne();
 
                     var audioDevices = AudioDeviceHelper.GetAllDevices()
-                        .Where(audioDevice => audioDevice.Name.EndsWith("(TC-Helicon GoXLR)"));
+                        .Where(audioDevice => audioDevice.Name.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
 
                     foreach (var audioDevice in audioDevices)
                     {
@@ -60,7 +60,7 @@ namespace GoXLR.Force.Defaults
                             device.AudioEndpointVolume.MasterVolumeLevelScalar = 1;
                         }
 
-                        if (audioDevice.Name == "Chat Mic (TC-Helicon GoXLR)")
+                        if (audioDevice.Name.StartsWith("Chat Mic"))
                         {
                             if (!audioDevice.Default)
                             {
@@ -73,7 +73,7 @@ namespace GoXLR.Force.Defaults
                             }
                         }
 
-                        if (audioDevice.Name == "System (TC-Helicon GoXLR)")
+                        if (audioDevice.Name.StartsWith("System"))
                         {
                             if (!audioDevice.Default)
                             {
@@ -81,7 +81,7 @@ namespace GoXLR.Force.Defaults
                             }
                         }
 
-                        if (audioDevice.Name == "Chat (TC-Helicon GoXLR)")
+                        if (audioDevice.Name.StartsWith("Chat"))
                         {
                             if (!audioDevice.DefaultCommunication)
                             {
