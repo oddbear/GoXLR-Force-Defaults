@@ -1,4 +1,5 @@
-/*namespace BEACN.Mix.Create.Force.Default.Device
+
+namespace BEACN.Mix.Create.Force.Default.Device
 {
     public class Program
     {
@@ -19,5 +20,3 @@
         }
     }
 }
-
-    */
