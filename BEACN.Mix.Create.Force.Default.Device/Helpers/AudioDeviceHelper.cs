@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreAudioApi;
-using GoXLR.Force.Defaults.Models;
+using BEACN.Mix.Create.Force.Default.Device.Models;
 
-namespace GoXLR.Force.Defaults.Helpers
+namespace BEACN.Mix.Create.Force.Default.Device.Helpers
 {
     public static class AudioDeviceHelper
     {

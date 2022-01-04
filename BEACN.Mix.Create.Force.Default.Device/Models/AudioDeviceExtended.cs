@@ -1,6 +1,6 @@
 ﻿using CoreAudioApi;
 
-namespace GoXLR.Force.Defaults.Models
+namespace BEACN.Mix.Create.Force.Default.Device.Models
 {
     public class AudioDeviceExtended
     {
