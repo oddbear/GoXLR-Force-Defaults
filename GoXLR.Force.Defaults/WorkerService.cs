@@ -95,9 +95,23 @@ namespace GoXLR.Force.Defaults
                     Console.WriteLine(e);
                 }
 
-                Thread.Sleep(5000);
+                try
+                {
+                    Thread.Sleep(5000);
+                }
+                catch (ThreadInterruptedException)
+                {
+                    //Thread was interupted (service stoped).
+                }
             }
         }
+
+#if DEBUG
+        public void Start()
+        {
+            OnStart(null);
+        }
+#endif
 
         protected override void OnStart(string[] args)
         {
@@ -110,7 +124,6 @@ namespace GoXLR.Force.Defaults
                 Console.WriteLine(e);
             }
         }
-
 
         protected override void OnContinue()
         {
@@ -150,13 +163,3 @@ namespace GoXLR.Force.Defaults
         }
     }
 }
-/*
- *
- * 
-	static class Program { static void Main() { ServiceBase.Run(new ServiceBase[] { new Service() } ); }}
-    System.ServiceProcess.ServiceBase.Run(new UserService1());
- */
-
-/*
-    Service1 service = new Service1();
-    service.RunService( args );*/
