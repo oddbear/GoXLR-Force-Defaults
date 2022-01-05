@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
-using CoreAudioApi;
-using GoXLR.Force.Defaults.Helpers;
+using AudioSwitcher.AudioApi.CoreAudio;
 
 namespace GoXLR.Force.Defaults
 {
@@ -35,57 +30,57 @@ namespace GoXLR.Force.Defaults
 
         private void WorkerMethod()
         {
+            var controller = new CoreAudioController();
             while (true)
             {
                 try
                 {
                     _manualResetEvent.WaitOne();
 
-                    var audioDevices = AudioDeviceHelper.GetAllDevices()
-                        .Where(audioDevice => audioDevice.Name.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
+                    var audioDevices = controller
+                        .GetDevices()
+                        .Where(device => device.InterfaceName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
 
                     foreach (var audioDevice in audioDevices)
                     {
-                        var device = audioDevice.Device;
-
                         //Un-mute if muted:
-                        if (device.AudioEndpointVolume.Mute)
+                        if (audioDevice.IsMuted)
                         {
-                            device.AudioEndpointVolume.Mute = false;
+                            audioDevice.Mute(false);
                         }
 
                         //Set Volume to 100% if lower:
-                        if (device.AudioEndpointVolume.MasterVolumeLevelScalar < 1)
+                        if (audioDevice.Volume < 100)
                         {
-                            device.AudioEndpointVolume.MasterVolumeLevelScalar = 1;
+                            audioDevice.Volume = 100;
                         }
 
                         if (audioDevice.Name.StartsWith("Chat Mic"))
                         {
-                            if (!audioDevice.Default)
+                            if (!audioDevice.IsDefaultDevice)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                                audioDevice.SetAsDefault();
                             }
 
-                            if (!audioDevice.DefaultCommunication)
+                            if (!audioDevice.IsDefaultCommunicationsDevice)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
+                                audioDevice.SetAsDefaultCommunications();
                             }
                         }
 
                         if (audioDevice.Name.StartsWith("System"))
                         {
-                            if (!audioDevice.Default)
+                            if (!audioDevice.IsDefaultDevice)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                                audioDevice.SetAsDefault();
                             }
                         }
 
                         if (audioDevice.Name.StartsWith("Chat"))
                         {
-                            if (!audioDevice.DefaultCommunication)
+                            if (!audioDevice.IsDefaultCommunicationsDevice)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
+                                audioDevice.SetAsDefaultCommunications();
                             }
                         }
                     }
@@ -97,7 +92,7 @@ namespace GoXLR.Force.Defaults
 
                 try
                 {
-                    Thread.Sleep(5000);
+                    Thread.Sleep(TimeSpan.FromMilliseconds(5)); //5000
                 }
                 catch (ThreadInterruptedException)
                 {

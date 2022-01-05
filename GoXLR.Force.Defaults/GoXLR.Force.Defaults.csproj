@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AudioDeviceCmdlets" Version="3.0.0.2" />
+    <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="3.0.0.1" />
   </ItemGroup>
 
   <ItemGroup>
