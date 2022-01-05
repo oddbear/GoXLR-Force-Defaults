@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using AudioDeviceCmdlets;
 using CoreAudioApi.Interfaces;
 
 namespace CoreAudioApi
@@ -43,6 +44,16 @@ namespace CoreAudioApi
             IMMDeviceCollection result;
             Marshal.ThrowExceptionForHR(_realEnumerator.EnumAudioEndpoints(dataFlow,dwStateMask,out result));
             return new MMDeviceCollection(result);
+        }
+
+        public void RegisterEndpointNotificationCallback(IMMNotificationClient notificationClient)
+        {
+            _realEnumerator.RegisterEndpointNotificationCallback(notificationClient);
+        }
+
+        public void UnregisterEndpointNotificationCallback(IMMNotificationClient notificationClient)
+        {
+            _realEnumerator.UnregisterEndpointNotificationCallback(notificationClient);
         }
 
         public MMDevice GetDefaultAudioEndpoint(EDataFlow dataFlow, ERole role)

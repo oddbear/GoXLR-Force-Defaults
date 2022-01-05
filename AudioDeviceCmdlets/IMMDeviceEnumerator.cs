@@ -23,9 +23,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using AudioDeviceCmdlets;
 
 namespace CoreAudioApi.Interfaces
 {
+    //Changes: https://docs.microsoft.com/en-us/answers/questions/249661/detect-audio-on-windows-10.html
     [Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"),
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     internal interface IMMDeviceEnumerator
@@ -37,8 +39,8 @@ namespace CoreAudioApi.Interfaces
         [PreserveSig]
         int GetDevice(string pwstrId, out IMMDevice ppDevice);
         [PreserveSig]
-        int RegisterEndpointNotificationCallback(IntPtr pClient);
+        int RegisterEndpointNotificationCallback(IMMNotificationClient pClient);
         [PreserveSig]
-        int UnregisterEndpointNotificationCallback(IntPtr pClient);
+        int UnregisterEndpointNotificationCallback(IMMNotificationClient pClient);
     }
 }
