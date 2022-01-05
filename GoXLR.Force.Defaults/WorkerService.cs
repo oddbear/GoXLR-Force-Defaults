@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
-using CoreAudioApi;
-using GoXLR.Force.Defaults.Helpers;
+using NAudio.CoreAudioApi;
 
 namespace GoXLR.Force.Defaults
 {
@@ -41,53 +40,86 @@ namespace GoXLR.Force.Defaults
                 {
                     _manualResetEvent.WaitOne();
 
-                    var audioDevices = AudioDeviceHelper.GetAllDevices()
-                        .Where(audioDevice => audioDevice.Name.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
-
-                    foreach (var audioDevice in audioDevices)
+                    using (var enumerator = new MMDeviceEnumerator())
                     {
-                        var device = audioDevice.Device;
+                        var defaultRenderMultimedia = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                        var defaultRenderCommunications = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Communications);
+                        var defaultCaptureMultimedia = enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
+                        var defaultCaptureCommunications = enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Communications);
 
-                        //Un-mute if muted:
-                        if (device.AudioEndpointVolume.Mute)
-                        {
-                            device.AudioEndpointVolume.Mute = false;
-                        }
+                        var audioDevices = enumerator.EnumerateAudioEndPoints(DataFlow.All, DeviceState.All);
 
-                        //Set Volume to 100% if lower:
-                        if (device.AudioEndpointVolume.MasterVolumeLevelScalar < 1)
+                        foreach (var device in audioDevices)
                         {
-                            device.AudioEndpointVolume.MasterVolumeLevelScalar = 1;
-                        }
-
-                        if (audioDevice.Name.StartsWith("Chat Mic"))
-                        {
-                            if (!audioDevice.Default)
+                            var deviceName = device.DeviceFriendlyName;
+                            if (deviceName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) < 0)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                                device.Dispose();
+                                continue;
                             }
 
-                            if (!audioDevice.DefaultCommunication)
+                            //Un-mute if muted:
+                            if (device.AudioEndpointVolume.Mute)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
+                                device.AudioEndpointVolume.Mute = false;
                             }
+
+                            //Set Volume to 100% if lower:
+                            if (device.AudioEndpointVolume.MasterVolumeLevelScalar < 1)
+                            {
+                                device.AudioEndpointVolume.MasterVolumeLevelScalar = 1;
+                            }
+
+                            if (device.FriendlyName.StartsWith("Chat Mic"))
+                            {
+                                if (device == defaultCaptureMultimedia)
+                                {
+                                    //TODO: Any implementation of this in NAudio, or do I need something custom?
+                                    //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                                    Console.WriteLine("Chat is not default capture multimedia");
+                                }
+
+                                if (device == defaultCaptureCommunications)
+                                {
+                                    //TODO: Any implementation of this in NAudio, or do I need something custom?
+                                    //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
+                                    Console.WriteLine("Chat is not default capture communication");
+                                }
+                            }
+
+                            if (device.FriendlyName.StartsWith("System"))
+                            {
+                                if (device == defaultRenderMultimedia)
+                                {
+                                    //TODO: Any implementation of this in NAudio, or do I need something custom?
+                                    //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                                    Console.WriteLine("Chat is not default render multimedia");
+                                }
+                            }
+
+                            if (device.FriendlyName.StartsWith("Chat"))
+                            {
+                                if (device == defaultRenderCommunications)
+                                {
+                                    //TODO: Any implementation of this in NAudio, or do I need something custom?
+                                    //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
+                                    Console.WriteLine("Chat is not default render communication");
+                                }
+                            }
+
+                            device.Dispose();
                         }
 
-                        if (audioDevice.Name.StartsWith("System"))
-                        {
-                            if (!audioDevice.Default)
-                            {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
-                            }
-                        }
-
-                        if (audioDevice.Name.StartsWith("Chat"))
-                        {
-                            if (!audioDevice.DefaultCommunication)
-                            {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
-                            }
-                        }
+                        defaultRenderMultimedia.Dispose();
+                        defaultRenderCommunications.Dispose();
+                        defaultCaptureMultimedia.Dispose();
+                        defaultCaptureCommunications.Dispose();
+                        
+                        //Not Working :(
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
                     }
                 }
                 catch (Exception e)
@@ -97,7 +129,7 @@ namespace GoXLR.Force.Defaults
 
                 try
                 {
-                    Thread.Sleep(5000);
+                    Thread.Sleep(5);
                 }
                 catch (ThreadInterruptedException)
                 {
