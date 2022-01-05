@@ -30,57 +30,61 @@ namespace GoXLR.Force.Defaults
 
         private void WorkerMethod()
         {
-            var controller = new CoreAudioController();
+            //https://github.com/xenolightning/AudioSwitcher/issues/44
+
             while (true)
             {
                 try
                 {
                     _manualResetEvent.WaitOne();
 
-                    var audioDevices = controller
-                        .GetDevices()
-                        .Where(device => device.InterfaceName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
-
-                    foreach (var audioDevice in audioDevices)
+                    using (var controller = new CoreAudioController())
                     {
-                        //Un-mute if muted:
-                        if (audioDevice.IsMuted)
-                        {
-                            audioDevice.Mute(false);
-                        }
+                        var audioDevices = controller
+                            .GetDevices()
+                            .Where(device => device.InterfaceName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
 
-                        //Set Volume to 100% if lower:
-                        if (audioDevice.Volume < 100)
+                        foreach (var audioDevice in audioDevices)
                         {
-                            audioDevice.Volume = 100;
-                        }
-
-                        if (audioDevice.Name.StartsWith("Chat Mic"))
-                        {
-                            if (!audioDevice.IsDefaultDevice)
+                            //Un-mute if muted:
+                            if (audioDevice.IsMuted)
                             {
-                                audioDevice.SetAsDefault();
+                                audioDevice.Mute(false);
                             }
 
-                            if (!audioDevice.IsDefaultCommunicationsDevice)
+                            //Set Volume to 100% if lower:
+                            if (audioDevice.Volume < 100)
                             {
-                                audioDevice.SetAsDefaultCommunications();
+                                audioDevice.Volume = 100;
                             }
-                        }
 
-                        if (audioDevice.Name.StartsWith("System"))
-                        {
-                            if (!audioDevice.IsDefaultDevice)
+                            if (audioDevice.Name.StartsWith("Chat Mic"))
                             {
-                                audioDevice.SetAsDefault();
+                                if (!audioDevice.IsDefaultDevice)
+                                {
+                                    audioDevice.SetAsDefault();
+                                }
+
+                                if (!audioDevice.IsDefaultCommunicationsDevice)
+                                {
+                                    audioDevice.SetAsDefaultCommunications();
+                                }
                             }
-                        }
 
-                        if (audioDevice.Name.StartsWith("Chat"))
-                        {
-                            if (!audioDevice.IsDefaultCommunicationsDevice)
+                            if (audioDevice.Name.StartsWith("System"))
                             {
-                                audioDevice.SetAsDefaultCommunications();
+                                if (!audioDevice.IsDefaultDevice)
+                                {
+                                    audioDevice.SetAsDefault();
+                                }
+                            }
+
+                            if (audioDevice.Name.StartsWith("Chat"))
+                            {
+                                if (!audioDevice.IsDefaultCommunicationsDevice)
+                                {
+                                    audioDevice.SetAsDefaultCommunications();
+                                }
                             }
                         }
                     }
