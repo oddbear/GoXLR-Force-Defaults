@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 using CoreAudioApi;
-using GoXLR.Force.Defaults.Helpers;
 
 namespace GoXLR.Force.Defaults
 {
@@ -35,19 +29,21 @@ namespace GoXLR.Force.Defaults
 
         private void WorkerMethod()
         {
+            var enumerator = new MMDeviceEnumerator();
             while (true)
             {
                 try
                 {
                     _manualResetEvent.WaitOne();
 
-                    var audioDevices = AudioDeviceHelper.GetAllDevices()
-                        .Where(audioDevice => audioDevice.Name.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
+                    var audioDevices = enumerator.EnumerateAudioEndPoints(EDataFlow.eAll, EDeviceState.DEVICE_STATE_ACTIVE);
 
-                    foreach (var audioDevice in audioDevices)
+                    for (int i = 0; i < audioDevices.Count; i++)
                     {
-                        var device = audioDevice.Device;
-
+                        var device = audioDevices[i];
+                        if (device.FriendlyName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) < 0)
+                            continue;
+                        
                         //Un-mute if muted:
                         if (device.AudioEndpointVolume.Mute)
                         {
@@ -60,32 +56,32 @@ namespace GoXLR.Force.Defaults
                             device.AudioEndpointVolume.MasterVolumeLevelScalar = 1;
                         }
 
-                        if (audioDevice.Name.StartsWith("Chat Mic"))
+                        if (device.FriendlyName.StartsWith("Chat Mic"))
                         {
-                            if (!audioDevice.Default)
+                            //if (!device.Default)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                                //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
                             }
 
-                            if (!audioDevice.DefaultCommunication)
+                            //if (!device.DefaultCommunication)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
-                            }
-                        }
-
-                        if (audioDevice.Name.StartsWith("System"))
-                        {
-                            if (!audioDevice.Default)
-                            {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                                //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
                             }
                         }
 
-                        if (audioDevice.Name.StartsWith("Chat"))
+                        if (device.FriendlyName.StartsWith("System"))
                         {
-                            if (!audioDevice.DefaultCommunication)
+                            //if (!audioDevice.Default)
                             {
-                                AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
+                                //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eMultimedia);
+                            }
+                        }
+
+                        if (device.FriendlyName.StartsWith("Chat"))
+                        {
+                            //if (!audioDevice.DefaultCommunication)
+                            {
+                                //AudioDeviceHelper.SetDefaultDeviceForRole(audioDevice, ERole.eCommunications);
                             }
                         }
                     }
@@ -97,7 +93,7 @@ namespace GoXLR.Force.Defaults
 
                 try
                 {
-                    Thread.Sleep(5000);
+                    Thread.Sleep(5);
                 }
                 catch (ThreadInterruptedException)
                 {

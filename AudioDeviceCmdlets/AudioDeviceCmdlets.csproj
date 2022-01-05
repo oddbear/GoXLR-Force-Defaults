@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <Version>3.0.0.2-recompiled</Version>
+
+    <PackageId>AudioDeviceCmdlets</PackageId>
+    <Authors>AudioDeviceCmdlets</Authors>
+    <Company>frgn.ca</Company>
+    <Product>AudioDeviceCmdlets</Product>
+    <Description>AudioDeviceCmdlets is a suite of PowerShell Cmdlets to control audio devices on Windows</Description>
+    <Copyright>Copyright (c) 2016-2018 Francois Gendron &lt;fg@frgn.ca&gt;</Copyright>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
+  </PropertyGroup>
+
+</Project>
