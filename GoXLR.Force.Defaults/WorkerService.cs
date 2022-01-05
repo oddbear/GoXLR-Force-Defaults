@@ -3,6 +3,8 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Threading;
 using AudioSwitcher.AudioApi.CoreAudio;
+using System.Collections.ObjectModel;
+using AudioSwitcher.AudioApi;
 
 namespace GoXLR.Force.Defaults
 {
@@ -28,9 +30,54 @@ namespace GoXLR.Force.Defaults
             _workerThread.Start();
         }
 
+        public class GenericObserver<T> : IObserver<T>
+        {
+            private readonly Action<T> _action;
+
+            public GenericObserver(Action<T> action)
+            {
+                _action = action;
+            }
+
+            public void OnCompleted()
+            {
+                //
+            }
+
+            public void OnError(Exception error)
+            {
+                //
+            }
+
+            public void OnNext(T value)
+            {
+                _action(value);
+            }
+        }
+        
         private void WorkerMethod()
         {
             //https://github.com/xenolightning/AudioSwitcher/issues/44
+            {
+                var AudioDevices = new ObservableCollection<string>();
+                AudioDevices.Add("");
+                AudioDevices.CollectionChanged += (sender, args) => { };
+
+                var controller = new CoreAudioController();
+
+                var audioDevices = controller
+                    .GetDevices()
+                    .Where(device => device.InterfaceName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0);
+                
+                foreach (var audioDevice in audioDevices)
+                {
+                    var disposable1 = audioDevice.VolumeChanged.Subscribe(new GenericObserver<DeviceVolumeChangedArgs>(value => Console.WriteLine($"{value.Device.FullName}: {value.Volume}")));
+                    var disposable2 = audioDevice.MuteChanged.Subscribe(new GenericObserver<DeviceMuteChangedArgs>(value => Console.WriteLine($"{value.Device.FullName}: {value.IsMuted}")));
+                    var disposable3 = audioDevice.DefaultChanged.Subscribe(new GenericObserver<DefaultDeviceChangedArgs>(value => Console.WriteLine($"{value.Device.FullName}: {value.IsDefault}, {value.IsDefaultCommunications}")));
+                }
+            }
+
+            return;
 
             while (true)
             {
