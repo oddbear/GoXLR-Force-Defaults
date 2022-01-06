@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GoXLR.Force.Defaults.Com;
 using NAudio.CoreAudioApi;
@@ -7,9 +8,10 @@ using NAudio.CoreAudioApi.Interfaces;
 
 namespace GoXLR.Force.Defaults
 {
+    [SuppressMessage("ReSharper", "ReplaceWithSingleCallToSingleOrDefault")]
     public class NotificationClient : IMMNotificationClient
     {
-        private readonly Dictionary<string, MMDevice> _devices = new Dictionary<string, MMDevice>();
+        private readonly Dictionary<string, MMDevice> _goXlrDevices = new Dictionary<string, MMDevice>();
         private readonly MMDeviceEnumerator _deviceEnumerator;
         private readonly PolicyConfigClient _policyConfigClient;
         
@@ -23,7 +25,10 @@ namespace GoXLR.Force.Defaults
             var devices = _deviceEnumerator.EnumerateAudioEndPoints(DataFlow.All, DeviceState.All);
             foreach (var device in devices)
             {
-                _devices[device.ID] = device;
+                if (!IsGoXLR(device))
+                    continue;
+
+                _goXlrDevices[device.ID] = device;
             }
 
             //Set initial defaults to GoXLR defaults:
@@ -35,7 +40,10 @@ namespace GoXLR.Force.Defaults
             //Subscribe to mute/unmute and volume change events:
             foreach (var mmDevice in GetGoXLRDevices())
             {
-                OnDeviceAdded(mmDevice);
+                //{0.0.0.00000000} -> Renderer
+                //{0.0.1.00000000} -> Capture
+                Console.WriteLine($"{DateTime.Now}: GoXLR Found | {mmDevice.ID}");
+                MonitorNewDevice(mmDevice);
             }
         }
 
@@ -48,9 +56,9 @@ namespace GoXLR.Force.Defaults
         private MMDevice[] GetGoXLRDevices()
         {
             //TODO: What if it's not connected yet? Need to subscribe when connected and disconnected.
-            return _devices
+            return _goXlrDevices
                 .Values
-                .Where(device => device.DeviceFriendlyName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0)
+                .Where(device => IsGoXLR(device))
                 .Where(device => device.State == DeviceState.Active)
                 .ToArray();
         }
@@ -65,49 +73,54 @@ namespace GoXLR.Force.Defaults
             if (string.IsNullOrWhiteSpace(searchString))
                 return null;
 
-            return _devices
+            return _goXlrDevices
                 .Values
                 .Where(device => device.State == DeviceState.Active)
                 .Where(device => device.DataFlow == flow)
-                .Where(device => device.FriendlyName.StartsWith(searchString))
+                .Where(device => device.FriendlyName.StartsWith(searchString, StringComparison.OrdinalIgnoreCase))
                 .SingleOrDefault();
         }
 
-        private void SetDefaultAudioDevice(DataFlow flow, Role role, string pwstrDefaultDeviceId, string searchString)
+        private void SetDefaultAudioDevice(DataFlow flow, Role role, string newDefaultDeviceId, string searchString)
         {
-            if (string.IsNullOrWhiteSpace(pwstrDefaultDeviceId))
+            //Get either a Render or Capture device:
+            var device = GetActiveDevice(flow, searchString);
+            if (device is null)
                 return;
 
-            var mmDevice = GetActiveDevice(flow, searchString);
-
-            if (mmDevice == null)
-                return;
-
-            if (pwstrDefaultDeviceId == mmDevice.ID)
-                return;
-
-            SetDefaultDevice(mmDevice.ID, role);
+            //Checks if device is not already set as default:
+            if (newDefaultDeviceId == device.ID)
+                return; //New default device is a GoXLR device, ignore.
+            
+            SetDefaultDevice(device.ID, role);
         }
 
-        private void OnDeviceAdded(MMDevice device)
+        private void MonitorNewDevice(MMDevice device)
         {
+            if (!IsGoXLR(device))
+                return;
+
+            _goXlrDevices[device.ID] = device;
+
             //TODO: Set as default if not already set.
 
             //Add unmute and 100% volume fix.
             device.AudioEndpointVolume.OnVolumeNotification += data =>
             {
+                Console.WriteLine($"{DateTime.Now}: {data.Guid} {data.Muted} {data.MasterVolume}");
+
                 if (data.Muted)
                     device.AudioEndpointVolume.Mute = false;
 
                 if (data.MasterVolume < 1)
                     device.AudioEndpointVolume.MasterVolumeLevelScalar = 1;
-
-                Console.WriteLine($"{data.Guid} {data.Muted} {data.MasterVolume}");
             };
         }
         
         void IMMNotificationClient.OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
         {
+            Console.WriteLine($"{DateTime.Now}: OnDefaultDeviceChanged: {flow}, {role}, {defaultDeviceId}");
+
             if (flow == DataFlow.Render && role == Role.Multimedia)
             {
                 SetDefaultAudioDevice(flow, role, defaultDeviceId, "System");
@@ -131,35 +144,47 @@ namespace GoXLR.Force.Defaults
                 SetDefaultAudioDevice(flow, role, defaultDeviceId, "Chat Mic");
                 return;
             }
-
-            Console.WriteLine($"OnDefaultDeviceChanged: {flow}, {role}, {defaultDeviceId}");
         }
 
         void IMMNotificationClient.OnDeviceAdded(string pwstrDeviceId)
         {
-            Console.WriteLine($"OnDeviceAdded: {pwstrDeviceId}");
-
             var device = _deviceEnumerator.GetDevice(pwstrDeviceId);
-            if(device.DeviceFriendlyName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) < 0)
+            if (!IsGoXLR(device))
                 return;
 
-            OnDeviceAdded(device);
+            Console.WriteLine($"{DateTime.Now} [OnDeviceAdded]: Registering new device id '{pwstrDeviceId}' with name '{device.FriendlyName}'");
+
+            MonitorNewDevice(device);
         }
 
         void IMMNotificationClient.OnDeviceRemoved(string deviceId)
         {
+            if (!_goXlrDevices.TryGetValue(deviceId, out var device))
+                return;
+            
             //TODO: Implement:
-            Console.WriteLine($"OnDeviceRemoved: {deviceId}");
+            Console.WriteLine($"{DateTime.Now}: OnDeviceRemoved: {deviceId}");
         }
 
         void IMMNotificationClient.OnDeviceStateChanged(string deviceId, DeviceState newState)
         {
-            Console.WriteLine($"OnDeviceStateChanged: {deviceId}, {newState}");
+            if (!_goXlrDevices.ContainsKey(deviceId))
+                return;
+
+            Console.WriteLine($"{DateTime.Now}: OnDeviceStateChanged: {deviceId}, {newState}");
         }
 
         void IMMNotificationClient.OnPropertyValueChanged(string pwstrDeviceId, PropertyKey key)
         {
-            Console.WriteLine($"OnPropertyValueChanged: {pwstrDeviceId}, {key.formatId} ... {key.propertyId}");
+            if (!_goXlrDevices.ContainsKey(pwstrDeviceId))
+                return;
+
+            Console.WriteLine($"{DateTime.Now}: OnPropertyValueChanged: {pwstrDeviceId} || {key.formatId} || {key.propertyId}");
+        }
+
+        private bool IsGoXLR(MMDevice device)
+        {
+            return device.DeviceFriendlyName.IndexOf("TC-Helicon GoXLR", StringComparison.OrdinalIgnoreCase) >= 0;
         }
     }
 }
