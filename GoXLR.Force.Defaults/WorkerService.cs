@@ -1,15 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.ServiceProcess;
-using System.Threading;
+﻿using System.ServiceProcess;
 
 namespace GoXLR.Force.Defaults
 {
     public class WorkerService : ServiceBase
     {
-        private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
         private NotificationClient _notificationClient;
 
         public WorkerService()
@@ -23,32 +17,32 @@ namespace GoXLR.Force.Defaults
 
             _notificationClient = new NotificationClient();
         }
-        
-#if DEBUG
-        public void Start()
+
+        public void OnStart()
         {
             OnStart(null);
         }
-#endif
 
         protected override void OnStart(string[] args)
         {
-            //TODO: Re-implement
+            _notificationClient.IsActive = true;
+            _notificationClient.EnsureDefaultState();
         }
 
         protected override void OnContinue()
         {
-            //TODO: Re-implement
+            _notificationClient.IsActive = true;
+            _notificationClient.EnsureDefaultState();
         }
 
         protected override void OnPause()
         {
-            //TODO: Re-implement
+            _notificationClient.IsActive = false;
         }
 
         protected override void OnStop()
         {
-            //TODO: Re-implement
+            _notificationClient.IsActive = false;
         }
     }
 }
