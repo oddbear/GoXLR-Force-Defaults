@@ -1,0 +1,3 @@
+sc stop BEACN.Mix.Create.Force.Default.Device
+sc delete BEACN.Mix.Create.Force.Default.Device
+set /p DUMMY=Hit ENTER to continue...

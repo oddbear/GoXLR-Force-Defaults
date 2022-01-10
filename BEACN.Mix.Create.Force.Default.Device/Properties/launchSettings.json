@@ -2,10 +2,11 @@
   "profiles": {
     "BEACN.Mix.Create.Force.Default.Device": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
+      "commandLineArgs": "standalone",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": "true"
     }
   }
 }
