@@ -9,36 +9,15 @@ Additionally it will also set all the BEACN Devices to 100% Volume, and unmute t
 
 ### Download
 
-Download latest from [releases](https://github.com/GinjahWolf92/BEACN-Mix-Create-Force-Default/releases/download/v1.0/v1.0.zip)
+Download latest .zip from [releases](https://github.com/GinjahWolf92/BEACN-Mix-Create-Force-Default/releases)
 
 ### Install
 
-1. Extract zip file to a install location on the disk.
-2. Open up cmd.exe as Administrator (you will need this access to install a service).
-3. Run the following command to install the application as a windows service (you will need to change the path part):
-> sc create BEACN.Mix.Create.Force.Default.Device binPath="`<change path here>`\v1.0\BEACN Mix Create - Force Default Device.exe" start=auto
-4. To start the service, run the following command:
-> sc start BEACN.Mix.Create.Force.Default.Device
+1. Extract .zip file to an install location on the disk.
+2. Run the install.bat file as an administrator (required to install a service).
 
 ### Uninstall
 
-1. Run cmd.exe as administrator
-2. Run the following command to stop the service:
-> sc stop BEACN.Mix.Create.Force.Default.Device
-3. Run the following command to delete the service:
-> sc delete BEACN.Mix.Create.Force.Default.Device
-4. Delete the folder
+1. Run the uninstall.bat file as an administrator (required to remove a service).
+2. Delete the folder
 
-### Issues ?
-
-If you get any issues, please [create a ticket](https://github.com/GinjahWolf92/BEACN-Mix-Create-Force-Default/issues).
-
-### Dependencies
-* [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
-
-### Similar projected (changes defaults)
-- [EarTrumpet](https://github.com/File-New-Project/EarTrumpet/)
-- [AudioDeviceCmdlets](https://github.com/frgnca/AudioDeviceCmdlets)
-- [SoundSwitch](https://github.com/Belphemur/SoundSwitch)
-  - [AudioEndPointLibrary](https://github.com/Belphemur/AudioEndPointLibrary)
-Any more?
