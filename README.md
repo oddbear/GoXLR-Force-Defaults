@@ -14,10 +14,10 @@ Download latest .zip from [releases](https://github.com/GinjahWolf92/BEACN-Mix-C
 ### Install
 
 1. Extract .zip file to an install location on the disk.
-2. Run the install.bat file as an administrator (required to install a service).
+2. Run the install.bat file **as an administrator** (required to install a service).
 
 ### Uninstall
 
-1. Run the uninstall.bat file as an administrator (required to remove a service).
+1. Run the uninstall.bat file **as an administrator** (required to remove a service).
 2. Delete the folder
 
