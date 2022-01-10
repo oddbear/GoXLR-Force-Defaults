@@ -40,6 +40,10 @@ namespace GoXLR.Force.Defaults
                 //Subscribe to mute/unmute and volume change events:
                 device.AudioEndpointVolume.OnVolumeNotification += data =>
                 {
+                    //Do not set to default if not active:
+                    if (!IsActive)
+                        return;
+
                     //Ex ... [OnVolumeNotification]: 00000000-0000-0000-0000-000000000000 False 0,54
                     Console.WriteLine($"{DateTime.Now} [OnVolumeNotification]: {data.Guid} {data.Muted} {data.MasterVolume}");
 
@@ -100,6 +104,8 @@ namespace GoXLR.Force.Defaults
             if (!IsActive)
                 return;
 
+            Console.WriteLine($"{DateTime.Now} [SetDefaultAudioDevice]: {flow}, {role}, {newDefaultDeviceId}");
+
             //Get either a Render or Capture device, based on flow and searched device name:
             var device = GetActiveDevice(flow, searchString);
 
@@ -124,8 +130,6 @@ namespace GoXLR.Force.Defaults
         /// <param name="defaultDeviceId">The new default deviceId.</param>
         void IMMNotificationClient.OnDefaultDeviceChanged(DataFlow flow, Role role, string defaultDeviceId)
         {
-            Console.WriteLine($"{DateTime.Now} [OnDefaultDeviceChanged]: {flow}, {role}, {defaultDeviceId}");
-
             switch (flow)
             {
                 case DataFlow.Render when role == Role.Multimedia:
