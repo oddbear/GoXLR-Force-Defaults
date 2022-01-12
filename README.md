@@ -26,6 +26,14 @@ Download latest from [releases](https://github.com/oddbear/GoXLR-Force-Defaults/
 > sc delete GoXLR.Force.Defaults
 4. Delete the folder
 
+### Alternative install
+Alternativly you can run this as a hidden background task under Task Scheduler.
+1. Unzip to `%appdata%` folder, rename the new folder publish to whatever you want.
+2. Create a scheduled task that:
+> Under General: check `Hidden` and `Run whether user is logged in or not`.<br />
+> Under triggers: trigger `At startup`<br />
+> Under Actions: `Start a program`, and point to the exe file `GoXLR.Force.Defaults.exe`, with argument `standalone`.
+
 ### Issues ?
 
 If you get any issues, please [create a ticket](https://github.com/oddbear/GoXLR-Force-Defaults/issues).
