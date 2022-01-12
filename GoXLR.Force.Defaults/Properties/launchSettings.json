@@ -1,11 +1,12 @@
-﻿{
+{
   "profiles": {
     "GoXLR.Force.Defaults": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
+      "commandLineArgs": "standalone",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": "true"
     }
   }
 }
