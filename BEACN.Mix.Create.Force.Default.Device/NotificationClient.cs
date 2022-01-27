@@ -66,8 +66,8 @@ namespace BEACN.Mix.Create.Force.Default.Device
         {
             InitDefault(DataFlow.Render, Role.Multimedia, "System");
             InitDefault(DataFlow.Render, Role.Communications, "Chat");
-            InitDefault(DataFlow.Capture, Role.Multimedia, "Chat Mic");
-            InitDefault(DataFlow.Capture, Role.Communications, "Chat Mic");
+            InitDefault(DataFlow.Capture, Role.Multimedia, "Voice Chat Mic");
+            InitDefault(DataFlow.Capture, Role.Communications, "Voice Chat Mic");
 
             foreach (var device in _BEACNDevices.Values)
             {
@@ -136,13 +136,13 @@ namespace BEACN.Mix.Create.Force.Default.Device
                     SetDefaultAudioDevice(flow, role, defaultDeviceId, "System");
                     return;
                 case DataFlow.Render when role == Role.Communications:
-                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Chat");
+                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Voice Chat");
                     return;
                 case DataFlow.Capture when role == Role.Multimedia:
-                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Chat Mic");
+                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Voice Chat Mic");
                     return;
                 case DataFlow.Capture when role == Role.Communications:
-                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Chat Mic");
+                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Voice Chat Mic");
                     return;
             }
         }
