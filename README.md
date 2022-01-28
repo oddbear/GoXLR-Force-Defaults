@@ -15,6 +15,14 @@ Download the latest .zip from [releases](https://github.com/GinjahWolf92/BEACN-M
 1. Extract .zip file to an install location on the disk.
 2. Run the install.bat file **as an administrator** (required to install the service).
 
+### Alternative install
+Alternativly you can run this as a hidden background task under Task Scheduler.
+1. Unzip to `%appdata%` folder, rename the new folder publish to whatever you want.
+2. Create a scheduled task that:
+- Under General: check `Hidden` and `Run whether user is logged in or not`.<br />
+- Under triggers: trigger `At startup`<br />
+- Under Actions: `Start a program`, and point to the exe file `GoXLR.Force.Defaults.exe`, with argument `standalone`.
+
 ### Uninstall
 
 1. Run the uninstall.bat file **as an administrator** (required to remove the service).
