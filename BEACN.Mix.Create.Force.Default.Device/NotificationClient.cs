@@ -64,7 +64,7 @@ namespace BEACN.Mix.Create.Force.Default.Device
         /// </summary>
         public void EnsureDefaultState()
         {
-            InitDefault(DataFlow.Render, Role.Multimedia, "System");
+            InitDefault(DataFlow.Render, Role.Multimedia, "Game");
             InitDefault(DataFlow.Render, Role.Communications, "Chat");
             InitDefault(DataFlow.Capture, Role.Multimedia, "Voice Chat Mic");
             InitDefault(DataFlow.Capture, Role.Communications, "Voice Chat Mic");
