@@ -136,7 +136,7 @@ namespace BEACN.Mix.Create.Force.Default.Device
                     SetDefaultAudioDevice(flow, role, defaultDeviceId, "System");
                     return;
                 case DataFlow.Render when role == Role.Communications:
-                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Voice Chat");
+                    SetDefaultAudioDevice(flow, role, defaultDeviceId, "Chat");
                     return;
                 case DataFlow.Capture when role == Role.Multimedia:
                     SetDefaultAudioDevice(flow, role, defaultDeviceId, "Voice Chat Mic");
