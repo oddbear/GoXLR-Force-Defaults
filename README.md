@@ -1,4 +1,4 @@
-# Force Default Audio Devices for BEACN Mix Create
+# Force Default Audio Devices for BEACN Mix Create (GAME AS DEFAULT VERSION)
 
 ### NOTE: Orignally created for use with GoXLR but all functionality has been adapted to suit the BEACN Mix Create.
 
